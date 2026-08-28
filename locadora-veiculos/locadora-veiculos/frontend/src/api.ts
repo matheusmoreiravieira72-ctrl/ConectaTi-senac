@@ -1,11 +1,12 @@
 import type { Categoria, Veiculo, Cliente, Seguro, Locacao, Multa, Manutencao } from './types';
 
-const BASE = 'http://localhost:8087/api';
+const BASE = 'http://localhost:8080/api';
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE}${path}`);
   return res.json();
 }
+
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     method: 'POST',
@@ -14,6 +15,7 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   });
   return res.json();
 }
+
 async function patch<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     method: 'PATCH',

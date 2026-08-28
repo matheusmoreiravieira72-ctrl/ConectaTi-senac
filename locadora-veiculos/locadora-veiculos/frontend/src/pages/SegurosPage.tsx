@@ -11,7 +11,26 @@ export default function SegurosPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await api.criarSeguro({ nome: form.nome, valorDiaria: Number(form.valorDiaria) });
+
+    const valorNum = Number(form.valorDiaria);
+
+    // Validação 1: Impede valor menor ou igual a zero
+    if (isNaN(valorNum) || valorNum <= 0) {
+      alert('Erro: O valor por dia deve ser maior que zero!');
+      return;
+    }
+
+    // Validação 2: Impede nomes duplicados (insensível a maiúsculas/minúsculas)
+    const nomeExiste = lista.some(
+      s => s.nome.trim().toLowerCase() === form.nome.trim().toLowerCase()
+    );
+
+    if (nomeExiste) {
+      alert('Erro: Já existe um seguro cadastrado com este nome!');
+      return;
+    }
+
+    await api.criarSeguro({ nome: form.nome.trim(), valorDiaria: valorNum });
     setForm({ nome: '', valorDiaria: '' });
     carregar();
   }
@@ -26,9 +45,21 @@ export default function SegurosPage() {
       </div>
       <div className="card">
         <form className="grid-form" onSubmit={handleSubmit}>
-          <input placeholder="Nome (ex: Completo)" value={form.nome} onChange={e => setForm({ ...form, nome: e.target.value })} required />
-          <input type="number" step="0.01" placeholder="Valor por dia (R$)" value={form.valorDiaria}
-            onChange={e => setForm({ ...form, valorDiaria: e.target.value })} required />
+          <input 
+            placeholder="Nome (ex: Completo)" 
+            value={form.nome} 
+            onChange={e => setForm({ ...form, nome: e.target.value })} 
+            required 
+          />
+          <input 
+            type="number" 
+            step="0.01" 
+            min="0.01"
+            placeholder="Valor por dia (R$)" 
+            value={form.valorDiaria}
+            onChange={e => setForm({ ...form, valorDiaria: e.target.value })} 
+            required 
+          />
           <button type="submit" className="btn-primary">Adicionar</button>
         </form>
       </div>

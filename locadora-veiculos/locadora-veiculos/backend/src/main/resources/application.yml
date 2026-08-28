@@ -1,14 +1,14 @@
 server:
-  port: 8087
+  port: ${PORT:8080}
 
 spring:
   application:
     name: locadora-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5439/locadora_db
+    url: jdbc:postgresql://db.lsivnowjpaqwjlvzgcpl.supabase.co:5432/postgres
     username: postgres
-    password: postgres
+    password: 090909MATHEUS@@@!
     driver-class-name: org.postgresql.Driver
 
   jpa:

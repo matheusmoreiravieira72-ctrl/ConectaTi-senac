@@ -15,7 +15,21 @@ export default function MultasPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await api.criarMulta({ locacaoId: Number(form.locacaoId), motivo: form.motivo, valor: Number(form.valor) });
+
+    const valorNum = Number(form.valor);
+
+    // Validação: Impede que o valor da multa seja menor ou igual a zero
+    if (isNaN(valorNum) || valorNum <= 0) {
+      alert('Erro: O valor da multa deve ser maior que zero!');
+      return;
+    }
+
+    await api.criarMulta({ 
+      locacaoId: Number(form.locacaoId), 
+      motivo: form.motivo.trim(), 
+      valor: valorNum 
+    });
+
     setForm({ locacaoId: '', motivo: '', valor: '' });
     carregar();
   }
@@ -37,7 +51,15 @@ export default function MultasPage() {
             ))}
           </select>
           <input placeholder="Motivo" value={form.motivo} onChange={e => setForm({ ...form, motivo: e.target.value })} required />
-          <input type="number" step="0.01" placeholder="Valor (R$)" value={form.valor} onChange={e => setForm({ ...form, valor: e.target.value })} required />
+          <input 
+            type="number" 
+            step="0.01" 
+            min="0.01" 
+            placeholder="Valor (R$)" 
+            value={form.valor} 
+            onChange={e => setForm({ ...form, valor: e.target.value })} 
+            required 
+          />
           <button type="submit" className="btn-primary">Registrar</button>
         </form>
       </div>

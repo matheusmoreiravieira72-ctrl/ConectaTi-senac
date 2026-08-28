@@ -40,9 +40,9 @@ export default function LocacoesPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // CORREÇÃO DO BUG: Validação de intervalo de datas
-    if (new Date(form.dataFimPrevista) < new Date(form.dataInicio)) {
-      alert('Erro: A data final da locação não pode ser anterior à data de início!');
+    // Validação OS 009: Data de fim deve ser estritamente posterior à de início
+    if (new Date(form.dataFimPrevista) <= new Date(form.dataInicio)) {
+      alert('Erro: A data final da locação deve ser posterior à data de início!');
       return;
     }
 
@@ -93,7 +93,6 @@ export default function LocacoesPage() {
             {seguros.map(s => <option key={s.id} value={s.id}>{s.nome} (+{fmt(s.valorDiaria)}/dia)</option>)}
           </select>
 
-          {/* Campo Data Início */}
           <input 
             type="date" 
             value={form.dataInicio} 
@@ -101,7 +100,6 @@ export default function LocacoesPage() {
             required 
           />
 
-          {/* Campo Data Fim com 'min' para travar datas anteriores */}
           <input 
             type="date" 
             value={form.dataFimPrevista} 

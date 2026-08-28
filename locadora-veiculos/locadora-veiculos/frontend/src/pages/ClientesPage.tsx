@@ -11,6 +11,17 @@ export default function ClientesPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    // Validação: Verifica se o CPF já existe na lista atual
+    const cpfExistente = lista.some(
+      c => c.cpf.replace(/\D/g, '') === form.cpf.replace(/\D/g, '')
+    );
+
+    if (cpfExistente) {
+      alert('Erro: Este CPF já está cadastrado para outro cliente!');
+      return;
+    }
+
     await api.criarCliente(form);
     setForm({ nome: '', cpf: '', cnh: '', telefone: '', email: '' });
     carregar();
@@ -25,7 +36,8 @@ export default function ClientesPage() {
       <div className="card">
         <form className="grid-form" onSubmit={handleSubmit}>
           <input placeholder="Nome" value={form.nome} onChange={e => setForm({ ...form, nome: e.target.value })} required />
-          <input placeholder="CPF" value={form.cpf} onChange={e => setForm({ ...form, cpf: e.target.value })} required />
+          <input placeholder="CPF" value={form.cpf} onChange=
+          {e => setForm({ ...form, cpf: e.target.value })} required />
           <input placeholder="CNH" value={form.cnh} onChange={e => setForm({ ...form, cnh: e.target.value })} required />
           <input placeholder="Telefone" value={form.telefone} onChange={e => setForm({ ...form, telefone: e.target.value })} />
           <input type="email" placeholder="E-mail" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
