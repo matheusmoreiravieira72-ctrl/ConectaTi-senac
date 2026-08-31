@@ -1,21 +1,25 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: locadora-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5439/locadora_db
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
 
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  h2:
+    console:
+      enabled: true
